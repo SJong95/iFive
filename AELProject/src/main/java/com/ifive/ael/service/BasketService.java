@@ -32,10 +32,13 @@ public class BasketService {
 	public ModelAndView myBas(String ID) {
 		mav = new ModelAndView();
 		List<BasketVO> basList = basDAO.myBas(ID);
+			// 주문 정보 가져오는 리스트
 		List<ResVO> resList = resDAO.resList();
+			// 음식점 정보를 가져오는 리스트
 		mav.addObject("basList",basList);
 		mav.addObject("resList",resList);
-		mav.setViewName("myBas");
+			// 해당 변수를 mav에 저장
+		mav.setViewName("myBas");	// 경로 설정
 		return mav;
 	}
 
@@ -60,23 +63,29 @@ public class BasketService {
 
 	public String payOrders(OrdersVO ordersVO, int point) { // 결제 완료시 실행
 		List<OrdersVO> payList = basDAO.payOrders(ordersVO);
+			// 주문내역에 추가하기 위한 리스트
 		for(int i=0;i<payList.size();i++) {
 			System.out.println(payList.get(i).toString());
 		}
-		int result = 0;
-		int total = 0;
+		int result = 0; // 추가, 삭제 결과 변수
+		int total = 0;  // 총 결제 금액 변수
 		for(int i=0;i<payList.size();i++) {
 			OrdersVO chaOrders = changeVO(payList.get(i), ordersVO);
+				// 필요한 정보를 추가하는 메소드
 			result = ordersDAO.ordersIn(chaOrders);
+				// 주문내역에 추가하는 메소드
 			total+=chaOrders.getORPRICE()*chaOrders.getOAMOUNT();
+				//  포인트 추가를 위해 총 결제금액 구하는 부분
 		}
-
-		if(result!=0) {
+		if(result!=0) { // 결제내역에 추가했을 때
 			result = basDAO.basketDel(ordersVO);
-			if(point == 0) {
-				memberDAO.pointAdd(new MemberVO(ordersVO.getID(),(int)(total*0.02)));	
+				// 장바구니에 있는 주문 정보 삭제
+			if(point == 0) { // 포인트를 사용하지 않았을 경우
+				memberDAO.pointAdd(new MemberVO(ordersVO.getID(),(int)(total*0.02)));
+				// 총 결제 금액에 2%를 포인트 적립
 			}
 			memberDAO.pointMin(new MemberVO(ordersVO.getID(),point));
+				// 사용 했을 경우 포인트 차감
 		}
 		return String.valueOf(result);
 	}

@@ -51,7 +51,11 @@
 					</tr>
 				</c:forEach>
 			</c:when>
+<<<<<<< HEAD
+			<c:otherwise><tr><td colspan="8">주문현황이 없습니다.</td></tr></c:otherwise>
+=======
 			<c:otherwise>주문현황이 없습니다.</c:otherwise>
+>>>>>>> branch 'master' of https://github.com/SJong95/iFive.git
 		</c:choose>
 	</table>
 

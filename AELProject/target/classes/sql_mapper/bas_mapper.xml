@@ -30,6 +30,7 @@
 		delete basket where rbnum=#{RBNUM} and id=#{ID}
 	</delete>
 	<select id="payOrders" parameterType="orders" resultType="orders">
-		select RBNUM, ID,BRNAME ORNAME,BPRICE ORPRICE,BMENU OMENU,BAMOUNT OAMOUNT from basket where id=#{ID} and rbnum=#{RBNUM}
+		select RBNUM, ID,BRNAME ORNAME,BPRICE ORPRICE,BMENU OMENU,BAMOUNT OAMOUNT
+		from basket where id=#{ID} and rbnum=#{RBNUM}
 	</select>
  </mapper>

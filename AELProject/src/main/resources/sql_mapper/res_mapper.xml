@@ -35,7 +35,7 @@
 		update res set rgrade=#{vGrade} where rbnum=#{rbNum}
 	</update>
 	<select id="resList" resultType="res">
-		select * from res
+		select * from res where divi = 1
 	</select>
 	<!--  @@@@@ 매장수정 수정 02.01 @@@@ 형 -->
 	<update id="modify" parameterType="res">

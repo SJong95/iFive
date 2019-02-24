@@ -16,9 +16,6 @@ public class OrdersService {
 
 	@Autowired
 	private OrdersDAO ordersDAO;
-	
-	@Autowired
-	private BasketDAO basDAO;
 
 	private ModelAndView mav;
 
@@ -48,9 +45,6 @@ public class OrdersService {
 		List<OrdersVO> ordersRe = ordersDAO.ordersRe(ONUM);
 		// 장바구니 테이블로 insert
 		for (int i = 0; i < ordersRe.size(); i++) {
-			if(ordersDAO.isBas(ordersRe.get(i)) != null) {
-				basDAO.basketDel(ordersRe.get(i));
-			}
 			ordersDAO.basketRe(ordersRe.get(i));
 		}
 		mav = new ModelAndView();
@@ -65,10 +59,9 @@ public class OrdersService {
 		OrdersVO ordersVO = new OrdersVO();
 		ordersVO.setONUM(ONUM);
 		ordersVO.setOAMOUNT(time);
-		ordersVO.setRBNUM(ordersDAO.orderSelbnum(ONUM));
 		ordersDAO.ordersWait(ordersVO);
 		mav = new ModelAndView();
-		mav.setViewName("redirect:/resOrders?RBNUM="+ordersVO.getRBNUM());
+		mav.setViewName("redirect:/");
 		return mav;
 	}
 
@@ -80,7 +73,7 @@ public class OrdersService {
 		Timer timer = new Timer();
 		if (ONUM.substring(0, 1).equals("D")) { // 배달
 			if (status.equals("주문 접수 중")) {
-				chaTime = 0;
+				chaTime = 1;
 				ordersVO.setOSTATUS("접수 완료");
 			} else if (status.equals("접수 완료")) {
 				chaTime = 1;
@@ -107,7 +100,7 @@ public class OrdersService {
 			}
 		} else if (ONUM.substring(0, 1).equals("V")) { // 방문 예약
 			if (status.equals("주문 접수 중")) {
-				chaTime = 0;
+				chaTime = 1;
 				ordersVO.setOSTATUS("접수 완료");
 			} else if (status.equals("접수 완료")) {
 				chaTime = 1;
@@ -131,7 +124,7 @@ public class OrdersService {
 			}
 		} else if (ONUM.substring(0, 1).equals("T")) { // 방문 포장
 			if (status.equals("주문 접수 중")) {
-				chaTime = 0;
+				chaTime = 1;
 				ordersVO.setOSTATUS("접수 완료");
 			} else if (status.equals("접수 완료")) {
 				chaTime = 1;

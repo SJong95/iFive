@@ -114,7 +114,11 @@ function pay(rbnum, id, totalP) {
 								console.log(data);
 								if(data == "1"){
 									alert("주문이 완료 되었습니다.");
+<<<<<<< HEAD
+									location="http://192.168.0.27/ael/"; // 추후 어디로 보낼지
+=======
 									location="http://192.168.0.27/ael/main"; // 추후 어디로 보낼지
+>>>>>>> branch 'master' of https://github.com/SJong95/iFive.git
 								}else{
 									alert("결제 에러입니다.");
 									location="http://192.168.0.27/ael/myPay";

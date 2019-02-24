@@ -27,9 +27,6 @@ public class PayController {
 	private ModelAndView mav = new ModelAndView();
 	
 	@Autowired
-	private JusoService js;
-	
-	@Autowired
 	private BasketService bs;
 	
 	@Autowired

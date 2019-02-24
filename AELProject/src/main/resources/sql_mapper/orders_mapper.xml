@@ -48,14 +48,8 @@
 	<select id="ordersRe" parameterType="String" resultType="orders">
 		SELECT * FROM ORDERS WHERE ONUM = #{ONUM}
 	</select>
-	<select id="isBas" parameterType="orders" resultType="bas">
-		select * from basket where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{OMENU}
-	</select>
 	
 	<insert id="basketRe" parameterType="orders">
 	INSERT INTO BASKET VALUES (#{RBNUM}, #{ID}, #{ORNAME}, #{ORPRICE}, #{OMENU}, #{OAMOUNT})
 	</insert>
-	<select id="orderSelbnum" parameterType="String" resultType="String">
-		select rbnum from orders where onum=#{ONUM} group by rbnum
-	</select>
 </mapper>
