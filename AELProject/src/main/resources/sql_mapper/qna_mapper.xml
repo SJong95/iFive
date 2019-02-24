@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="qna">
+<insert id="qnaWrite" parameterType="qna" useGeneratedKeys="true" keyProperty="qnum">
+INSERT INTO QNA VALUES(QNA_SEQ.nextval, #{ID}, #{QTITLE}, #{QCONTENT},0,#{QPASS},SYSDATE, #{QDIVI})
+
+<selectKey keyProperty="QNUM" resultType="int" order="AFTER">
+SELECT QNA_SEQ.CURRVAL FROM DUAL
+</selectKey>
+</insert>
+<!-- <select id="qnaList" resultType="qna"> -->
+<!-- SELECT * FROM QNA WHERE QRE = 0 -->
+<!-- </select> -->
+<select id="qnadetail" resultType="qna">
+SELECT * FROM QNA WHERE QNUM=#{QNUM}
+</select>
+<insert id="qnaReWrite" parameterType="qna" useGeneratedKeys="true" keyProperty="qnum">
+INSERT INTO QNA VALUES(QNA_SEQ.nextval, #{ID}, #{QTITLE}, #{QCONTENT},#{QRE},#{QPASS},SYSDATE,1)
+
+<selectKey keyProperty="QNUM" resultType="int" order="AFTER">
+SELECT QNA_SEQ.CURRVAL FROM DUAL
+</selectKey>
+</insert>
+<update id="qnaReWrite1" parameterType="qna">
+	UPDATE QNA SET QDIVI = 1 WHERE QNUM=#{QRE}
+</update>
+<select id="listCount" resultType="int">
+SELECT COUNT(*) FROM QNALIST
+</select>
+
+<select id="qnaListPaging" parameterType="page" resultType="qna">
+SELECT QNALIST.*, QNALIST.RN FROM QNALIST WHERE QRE = 0 AND QNALIST.RN BETWEEN #{startRow} AND #{endRow}
+
+</select>
+<select id="qnaRe" resultType="qna">
+SELECT * FROM QNA WHERE QRE != 0
+</select>
+<select id="myQnA" parameterType="String" resultType="qna">
+SELECT * FROM QNA WHERE ID = #{ID}
+</select>
+</mapper>

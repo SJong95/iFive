@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Juso">
+	<insert id="juso" parameterType="juso">
+		INSERT INTO JUSO
+		VALUES(#{ID},#{JPOSTCODE},#{JROADADDR},#{JEXTRAADDR},#{JDETAILADDR},#{JTOTALADDR},#{JBEST})
+	</insert>
+	<select id="jusoSel" resultType="String" parameterType="String">
+		SELECT JTOTALADDR FROM JUSO WHERE ID=#{ID} AND JBEST = 1
+	</select>
+	<select id="jusoList" resultType="juso">
+		SELECT * FROM JUSO WHERE ID =
+		#{ID}
+	</select>
+	<update id="mainjuso1" parameterType="String">
+		UPDATE JUSO SET JBEST = 2
+		WHERE JBEST = 1 and id=#{id}
+	</update>
+	<update id="mainjuso2" parameterType="String">
+		UPDATE JUSO SET JBEST = 1
+		WHERE JTOTALADDR = #{JTOTALADDR}
+	</update>
+
+	<update id="mainjuso3" parameterType="String">
+		UPDATE JUSO SET JBEST = 0
+		WHERE JBEST = 2 and id=#{id}
+	</update>
+
+	<select id="jusocheck1" resultType="juso">
+		SELECT * FROM JUSO WHERE ID =
+		#{ID} AND JTOTALADDR = #{JTOTALADDR}
+	</select>
+
+	<select id="jbestcheck" parameterType="juso" resultType="String">
+		select
+		jbest from juso where id = #{ID} and jbest = 1
+	</select>
+	
+	<!-- 회원 위치정보 JUSO 테이블에 해당 ID와 대표주소를 구분하는 칼럼으로 값의 유무 체크 -->
+	<select id="myLocation" parameterType="String" resultType="juso">
+		select * from juso where id=#{ID} and jbest = 1
+	</select>
+	
+	<!-- RES 테이블에 승인이 되고 차단되지 않은 음식점 정보를 검색 -->
+	<select id="resList" resultType="res">
+		select * from res where report BETWEEN 0 and 9 and divi=1
+	</select>
+	
+	
+	<select id="resJusoCha" parameterType="String" resultType="String">
+		select rbnum from res where raddr =#{JTOTALADDR}
+	</select>
+	<delete id="jusoDel" parameterType="juso">
+		DELETE FROM JUSO WHERE JTOTALADDR = #{JTOTALADDR}
+	</delete>
+</mapper>
+

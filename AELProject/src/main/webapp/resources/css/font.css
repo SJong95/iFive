@@ -1,0 +1,9 @@
+@font-face{
+	font-family: 'ffont';
+	src:url(./fonts/BMHANNAPro.ttf) format('truetype');
+	
+}
+body{
+	font-family: ffont;
+	
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member">
+	<select id="idOverlap" parameterType="member"
+		resultType="member">
+		SELECT * FROM MEMBER WHERE ID=#{id}
+	</select>
+	<select id="memberLogin" parameterType="member"
+		resultType="member">
+		SELECT * FROM MEMBER WHERE ID=#{ID} AND PW =#{PW}
+	</select>
+	<insert id="memberJoin" parameterType="member">
+		INSERT INTO MEMBER VALUES(
+		#{ID},#{PW},#{NAME},#{TEL},#{MEMBER_IMG},#{EMAIL},#{POINT},#{WHO}
+		)
+	</insert>
+	<select id="memberView" resultType="member">
+		SELECT * FROM MEMBER WHERE ID
+		= #{ID}
+	</select>
+	<insert id="overKey" parameterType="String">
+		insert into mailkey values(#{key})
+	</insert>
+	<select id="checkKey" parameterType="String" resultType="String">
+		select * from mailkey where mkey=#{key}
+	</select>
+	<!-- 02.01 -->
+	<update id="pwchange2" parameterType="member">
+		UPDATE MEMBER SET PW = #{PW} WHERE ID = #{ID}
+	</update>
+	<delete id="memberBye" parameterType="member">
+		DELETE FROM MEMBER WHERE ID = #{ID} 
+	</delete>
+	<update id="pointAdd" parameterType="member">
+		update member set point=point+#{POINT} where id=#{ID}
+	</update>
+	<update id="pointMin" parameterType="member">
+		update member set point=point-#{POINT} where id=#{ID}
+	</update>
+</mapper>

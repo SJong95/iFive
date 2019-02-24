@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fav">
+
+	<!-- 메뉴 등록 처리 -->
+	<insert id="favoriteIn" parameterType="fav">
+		INSERT INTO FAVORITE VALUES(#{ID}, #{RBNUM}, #{FRNAME})
+	</insert>
+	<select id="favSel" parameterType="fav" resultType="fav">
+		select * from
+		FAVORITE where RBNUM=#{RBNUM} and id=#{ID}
+	</select>
+	<select id="myFav" parameterType="String" resultType="fav">
+		SELECT * FROM FAVORITE WHERE ID=#{ID}
+	</select>
+	<delete id="favDel" parameterType="fav">
+		DELETE FROM FAVORITE WHERE RBNUM=#{RBNUM}
+	</delete>
+	<select id="favList" parameterType="String" resultType="fav">
+		select * from
+		FAVORITE where id=#{ID}
+	</select>
+</mapper>

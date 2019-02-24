@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<!-- 영록 --> 
+		<typeAlias alias="member" type="com.ifive.ael.vo.MemberVO"/>
+		<typeAlias alias="juso" type="com.ifive.ael.vo.JusoVO"/>
+		<typeAlias alias="res" type="com.ifive.ael.vo.ResVO"/>
+		<!-- 경태 -->
+		<typeAlias alias="qna" type="com.ifive.ael.vo.QnAVO"/>
+		<typeAlias alias="page" type="com.ifive.ael.vo.PageVO"/>
+		<typeAlias alias="notice" type="com.ifive.ael.vo.NoticeVO"/>
+		<typeAlias alias="fav" type="com.ifive.ael.vo.FavoriteVO"/>
+		<!-- 지훈 -->
+		<typeAlias alias="review" type="com.ifive.ael.vo.ReviewVO" />
+		<typeAlias alias="reviewRe"	type="com.ifive.ael.vo.ReviewReVO" />
+		<!-- 형 -->
+		<typeAlias alias="menu" type="com.ifive.ael.vo.MenuVO"/>
+		<typeAlias alias="resRe" type="com.ifive.ael.vo.ResReportVO"/>
+		<!-- 세종 -->
+		<typeAlias alias="bas" type="com.ifive.ael.vo.BasketVO"/>
+		<typeAlias alias="orders" type="com.ifive.ael.vo.OrdersVO"/>
+	</typeAliases>
+</configuration>

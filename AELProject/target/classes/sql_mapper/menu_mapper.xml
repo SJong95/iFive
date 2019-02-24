@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace = "menu">
+
+	<!-- 메뉴 등록 처리 -->
+	<insert id="menuAdd" parameterType="menu">
+		INSERT INTO MENU VALUES(#{RBNUM}, #{MNAME}, #{MPRICE}, #{MIMG}, #{MTMI})
+	</insert>
+
+	<!-- 메뉴 수정 폼 불러오기 -->
+	<select id="menuModifyForm" resultType="menu">
+		SELECT * FROM MENU WHERE MNAME = #{MNAME} AND RBNUM = #{RBNUM}
+	</select>
+	
+	<select id="menuAdmin" resultType="menu"> 
+		SELECT * FROM MENU WHERE RBNUM = #{RBNUM}
+	</select>
+	
+	<update id="menuModify" parameterType="menu">
+		UPDATE MENU SET MNAME=#{MNAME2}, MPRICE=#{MPRICE}, MTMI=#{MTMI},MIMG=#{MIMG} WHERE MNAME = #{MNAME} AND RBNUM = #{RBNUM}
+	</update>
+	
+	<delete id="menuDelete" parameterType="menu" >
+		DELETE FROM MENU WHERE MNAME = #{MNAME} AND RBNUM = #{RBNUM}
+	</delete>
+	<select id="resMenu" parameterType="String" resultType="menu">
+		select * from menu where rbnum=#{rbnum}
+	</select>
+ </mapper>

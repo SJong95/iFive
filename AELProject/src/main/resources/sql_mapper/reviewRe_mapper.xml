@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="reviewRe">
+
+<insert id="reviewRe" parameterType="reviewRe" useGeneratedKeys="true" keyProperty="bnum">
+INSERT INTO REVIEW_RE VALUES (REVIEW_RE_SEQ.nextval,DEFAULT, #{rbNum}, #{vrContent}, #{vNum}, sysdate)
+<selectKey keyProperty="vNum" resultType="int" order="AFTER">
+SELECT REVIEW_RE_SEQ.CURRVAL FROM DUAL
+</selectKey>
+</insert>
+
+<select id="reviewReList" parameterType="reviewRe" resultType="reviewRe">
+SELECT * FROM REVIEW_RE
+</select>
+
+</mapper>

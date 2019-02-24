@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace = "Bas">
+
+	<!-- 메뉴 등록 처리 -->
+	<insert id="basketIn" parameterType="bas">
+		INSERT INTO basket VALUES(#{RBNUM}, #{ID}, #{BRNAME}, #{BPRICE}, #{BMENU},#{BAMOUNT})
+	</insert>
+	<select id="basSel" parameterType="bas" resultType="bas">
+		select * from basket where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{BMENU}
+	</select>
+	<update id="basketAdd" parameterType="bas">
+		update basket set bamount=bamount+1 where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{BMENU}
+	</update>
+	<select id="basList" parameterType="String" resultType="bas">
+		select * from basket where id=#{ID}
+	</select>
+	<update id="basketMinu" parameterType="bas">
+		update basket set bamount=bamount-1 where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{BMENU}
+	</update>
+	<delete id="basketCancle" parameterType="bas">
+		delete basket where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{BMENU}
+	</delete>
+	<select id="payList" parameterType="bas" resultType="bas">
+		select * from basket where id=#{ID} and rbnum=#{RBNUM}
+	</select>
+	<delete id="basketDel" parameterType="orders">
+		delete basket where rbnum=#{RBNUM} and id=#{ID}
+	</delete>
+	<select id="payOrders" parameterType="orders" resultType="orders">
+		select RBNUM, ID,BRNAME ORNAME,BPRICE ORPRICE,BMENU OMENU,BAMOUNT OAMOUNT from basket where id=#{ID} and rbnum=#{RBNUM}
+	</select>
+ </mapper>

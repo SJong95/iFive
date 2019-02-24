@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="review">
+<insert id="reviewWrite" parameterType="review" useGeneratedKeys="true" keyProperty="bnum">
+INSERT INTO REVIEW VALUES (REVIEW_SEQ.nextval, #{id}, #{rbNum}, #{vContent},
+#{vImgName}, #{vGrade}, 0, sysdate, #{oNum})
+<selectKey keyProperty="vNum" resultType="int" order="AFTER">
+SELECT REVIEW_SEQ.CURRVAL FROM DUAL
+</selectKey>
+</insert>
+
+<select id="reviewList" parameterType="review" resultType="review">
+SELECT * FROM REVIEW WHERE RBNUM = #{rbNum} ORDER BY VNUM DESC
+</select>
+
+<select id="reviewDetail" parameterType="review" resultType="review">
+SELECT * FROM REVIEW WHERE VNUM = #{vNum}
+</select>
+
+	<insert id="reviewRe" parameterType="review"
+		useGeneratedKeys="true" keyProperty="bnum">
+		INSERT INTO REVIEW_RE VALUES (REVIEW_RE_SEQ.nextval,DEFAULT, #{rbNum},#{vrContent}, #{vNum}, sysdate)
+		<selectKey keyProperty="vNum" resultType="int" order="AFTER">
+			SELECT REVIEW_RE_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+
+	<select id="reviewReList" parameterType="review" resultType="review">
+	SELECT * FROM REVIEW WHERE RBNUM = #{rbNum} ORDER BY VNUM
+	</select>
+	<insert id="reviewReportID" parameterType="review">
+		INSERT INTO REVIEW_REPORT VALUES (#{id},#{vNum},#{rbNum})
+	</insert>
+	<update id="reviewReport" parameterType="review">
+		UPDATE REVIEW SET VREPORT = VREPORT + 1 WHERE VNUM = #{vNum}
+	</update>
+<!-- @@@@ 1/29 @@@@@ -->
+	<select id="reviewReportList" resultType="review">
+		SELECT * FROM REVIEW
+	</select>
+	
+	<update id="reviewAdminDelete" parameterType="review">
+		UPDATE REVIEW SET ID='admin', VCONTENT='관리자에 의해 차단되었습니다' WHERE VNUM=#{vNum}
+	</update>
+	
+	<select id="reviewID" parameterType="review" resultType="review">
+		SELECT * FROM REVIEW_REPORT WHERE ID = #{id} AND VNUM = #{vNum}
+	</select>
+	<select id="reviewPhoto" parameterType="review"
+		resultType="review">
+		SELECT * FROM REVIEW WHERE RBNUM = #{rbNum} AND VIMGNAME IS NOT NULL  ORDER BY VNUM
+		DESC
+	</select>
+	
+	<select id="reviewMember" parameterType="review"
+		resultType="review">
+		SELECT * FROM REVIEW WHERE ID = #{ID} ORDER BY VNUM	DESC
+	</select>
+	<!-- 2/7 -->
+	<select id="reviewWriteCheck" parameterType="review" resultType="review">
+		SELECT * FROM REVIEW WHERE ID = #{id} AND ONUM = #{oNum}
+	</select>
+</mapper>

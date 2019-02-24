@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Orders">
+
+	<!-- 주문 등록 처리 -->
+	<insert id="ordersIn" parameterType="orders">
+		<selectKey keyProperty="ONUM" resultType="String"
+			order="BEFORE">
+			SELECT
+			<if test="OCHOICE.equals('배달')">'D'||</if>
+			<if test="OCHOICE.equals('방문예약')">'V'||</if>
+			<if test="OCHOICE.equals('방문포장')">'T'||</if>
+			TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') ONUM FROM DUAL
+		</selectKey>
+		INSERT INTO orders VALUES(#{ONUM}, #{RBNUM}, #{ID}, #{ORNAME},
+		#{ORPRICE}, #{OMENU},#{OAMOUNT}, TO_DATE(substr(#{ONUM},2),'YYYY-MM-DD
+		HH24:MI:SS'), #{OSTATUS}, #{OCHOICE}, #{OPAY}, #{OCALL},
+		#{OJTOTALADDR}, TO_DATE(substr(#{ONUM},2),'YYYY-MM-DD HH24:MI:SS'))
+
+	</insert>
+	<!-- 2/7 주문내역 -->
+	<select id="ordersList" parameterType="String"
+		resultType="orders">
+		SELECT ORDERS.*, ODATE OTIME FROM ORDERS WHERE ID = #{ID}
+		ORDER BY ODATE DESC, ORPRICE DESC
+	</select>
+
+	<select id="ordersDetail" parameterType="String"
+		resultType="orders">
+		SELECT ORDERS.*, ODATE OTIME FROM ORDERS WHERE ONUM =
+		#{ONUM}
+	</select>
+	<update id="ordersPer" parameterType="orders">
+		update orders set OSTATUS =
+		#{OSTATUS} where onum=#{ONUM}
+	</update>
+	<update id="ordersWait" parameterType="orders">
+		update orders set OWAIT =
+		OWAIT+1/1440*#{OAMOUNT} where onum=#{ONUM}
+	</update>
+	<select id="ordersStatus" parameterType="String"
+		resultType="String">
+		select OSTATUS from orders where onum=#{ONUM} group by OSTATUS
+	</select>
+
+	<select id="ordersRe" parameterType="String" resultType="orders">
+		SELECT * FROM ORDERS WHERE ONUM = #{ONUM}
+	</select>
+	<select id="isBas" parameterType="orders" resultType="bas">
+		select * from basket where rbnum=#{RBNUM} and id=#{ID} and bmenu=#{OMENU}
+	</select>
+	
+	<insert id="basketRe" parameterType="orders">
+	INSERT INTO BASKET VALUES (#{RBNUM}, #{ID}, #{ORNAME}, #{ORPRICE}, #{OMENU}, #{OAMOUNT})
+	</insert>
+	<select id="orderSelbnum" parameterType="String" resultType="String">
+		select rbnum from orders where onum=#{ONUM} group by rbnum
+	</select>
+</mapper>

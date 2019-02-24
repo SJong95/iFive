@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace = "res">
+
+	<!-- 매장 정보 입력 처리 -->
+	<insert id="resinsert" parameterType="res">	
+		INSERT INTO RES VALUES(#{ID},#{RBNUM},#{RNAME},#{RADDR},#{RTEL},#{RES_IMG},#{RCHOICE},#{RCATE},#{RGRADE},#{REPORT},#{DIVI})	
+	</insert>
+	<!-- 삭제 
+	<select id="viewres" resultType="res">
+	SELECT * FROM RES WHERE ID = #{ID} 
+	</select> -->
+	<select id="resadList" resultType="res">
+		SELECT * FROM RES WHERE DIVI = 0
+	</select>
+	<select id="resadView" resultType="res">
+	SELECT * FROM RES WHERE ID = #{ID}
+	</select>
+	<update id="resyes" parameterType="res">
+		UPDATE RES SET DIVI = 1 WHERE RBNUM = #{RBNUM}
+	</update>
+	<update id="resno" parameterType="res">
+		UPDATE RES SET DIVI = #{DIVI} WHERE RBNUM = #{RBNUM}
+	</update>
+	<select id="resDetail" resultType="res" parameterType="String">
+		SELECT * FROM RES WHERE RBNUM = #{RBNUM} 
+	</select>
+	<!-- 02.01 추가 세종 -->
+	<update id="updateGrade" parameterType="review">
+	<selectKey keyProperty="vGrade" resultType="double" order="BEFORE">
+	select round(avg(vgrade),1) from review where rbnum=#{rbNum}
+	</selectKey>
+		update res set rgrade=#{vGrade} where rbnum=#{rbNum}
+	</update>
+	<select id="resList" resultType="res">
+		select * from res
+	</select>
+	<!--  @@@@@ 매장수정 수정 02.01 @@@@ 형 -->
+	<update id="modify" parameterType="res">
+		UPDATE RES SET RNAME=#{RNAME}, RADDR=#{RADDR}, RTEL=#{RTEL}, RCHOICE=#{RCHOICE}, RCATE=#{RCATE} WHERE RBNUM=#{RBNUM}  
+	</update>
+	
+	<select id="resModifyForm" resultType="res">
+		SELECT * FROM RES WHERE RBNUM = #{RBNUM} 
+	</select>
+	
+	<!-- 추가된 부분 1/29 형 -->
+	
+	<update id="resAdminDelete" parameterType="res">
+	 	UPDATE RES SET ID='admin', RNAME='-', RADDR='-', RTEL='-', RES_IMG='-', RCHOICE='-', RCATE='-', RGRADE=0, DIVI=0 WHERE RBNUM=#{RBNUM}
+	</update>
+	
+	<select id="resCateList" resultType="res" parameterType="String">
+		select * from res where rcate = #{RCATE} and divi=1
+	</select>
+	
+	<!-- 음식점 이름을 키워드로 검색하여 가져오는 검색 -->
+	<select id="resSearchList" resultType="res" parameterType="String">
+		select * from res where rname like '%'||#{search}||'%' and divi=1
+	</select>
+	
+	
+	<select id="myResList" resultType="res" parameterType="String">
+	SELECT * FROM RES WHERE ID = #{ID} and divi=1
+	</select>
+	<!-- 02.07 -->
+	<update id="resPer" parameterType="String">
+		UPDATE RES SET DIVI = 0 WHERE RBNUM = #{RBNUM}
+	</update>
+	<update id="resDel" parameterType="String">
+		UPDATE RES SET DIVI = 4 WHERE RBNUM = #{RBNUM}
+	</update>
+	<select id="resDelList" resultType="res">
+	SELECT * FROM RES WHERE DIVI = 4 
+	</select>
+	<select id="resOrders" parameterType="String" resultType="orders">
+		select * from orders where rbnum=#{RBNUM} and OSTATUS = '주문 접수 중'
+	</select>
+	<select id="resListAlignReview" parameterType="String" resultType="res">
+		select res.*,nvl(rcnt.reviewcnt,0)reviewcnt from res
+		left outer join
+		(select rbnum, count(*)reviewcnt from review group by rbnum order by reviewcnt desc) rcnt
+		on(res.rbnum=rcnt.rbnum) where divi=1 and rcate=#{RCATE}
+	</select>
+	<select id="resListAlignOrders" parameterType="String" resultType="res">
+		select res.*,nvl(ocnt.ordercnt,0)ordercnt from res left outer join (select rbnum, count(*)ordercnt from orders group by rbnum order by ordercnt desc) ocnt on(res.rbnum=ocnt.rbnum) where divi=1 and rcate=#{RCATE}
+	</select>
+	<select id="resListAlignGrade" parameterType="String" resultType="res">
+		select * from res where rcate=#{RCATE} and divi=1 order by rgrade desc
+	</select>
+	<select id="resListSearchAlignReview" parameterType="String" resultType="res">
+		select res.*,nvl(rcnt.reviewcnt,0)reviewcnt from res left outer join (select rbnum, count(*)reviewcnt from review group by rbnum order by reviewcnt desc) rcnt on(res.rbnum=rcnt.rbnum) where divi=1 and rname like '%'||#{search}||'%'
+	</select>
+	<select id="resListSearchAlignOrders" parameterType="String" resultType="res">
+		select res.*,nvl(ocnt.ordercnt,0)ordercnt from res left outer join (select rbnum, count(*)ordercnt from orders group by rbnum order by ordercnt desc) ocnt on(res.rbnum=ocnt.rbnum) where divi=1 and rname like '%'||#{search}||'%'
+	</select>
+	<select id="resListSearchAlignGrade" parameterType="String" resultType="res">
+		select * from res where rname like '%'||#{search}||'%' and divi=1 order by rgrade desc
+	</select>
+ </mapper>
